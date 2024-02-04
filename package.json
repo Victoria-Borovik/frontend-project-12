@@ -1,0 +1,20 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/Victoria-Borovik/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Victoria-Borovik/frontend-project-12/actions)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Victoria-Borovik/frontend-project-12.git"
+  },
+  "author": "Borovik Victoria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Victoria-Borovik/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/Victoria-Borovik/frontend-project-12#readme"
+}
