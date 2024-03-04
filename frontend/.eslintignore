@@ -1,9 +1,3 @@
 /node_modules/
 dist
 build
-
-/build/
-/config/
-/dist/
-/*.js
-/test/unit/coverage/
