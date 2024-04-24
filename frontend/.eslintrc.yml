@@ -24,6 +24,7 @@ rules:
   functional/no-conditional-statement: 0
   functional/no-expression-statement: 0
   functional/no-expression-statements: 0
+  functional/no-conditional-statements: 0
   functional/no-return-void: 0
   functional/immutable-data: 0
   functional/functional-parameters: 0
@@ -33,3 +34,5 @@ rules:
   react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
   testing-library/no-debug: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  no-param-reassign: ["error", { "props": false }]
+  import/prefer-default-export: 0
