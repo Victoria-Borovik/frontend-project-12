@@ -13,8 +13,13 @@ export default {
         username: 'Имя пользователя',
         password: 'Пароль',
         confirmPassword: 'Подтвердите пароль',
-        submitBtm: 'Зарегистрироваться',
-        validation: 'AAAA',
+        submitBtn: 'Зарегистрироваться',
+        validation: {
+          required: 'Обязательное поле',
+          usernameSize: 'От 3 до 20 символов',
+          passwordSize: 'Не менее 6 символов',
+          passwordsShouldBeEqual: 'Пароли должны совпадать',
+        },
       },
     },
     LogInPage: {

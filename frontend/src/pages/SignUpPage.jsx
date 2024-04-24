@@ -1,4 +1,6 @@
-import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import { useEffect, useRef } from 'react';
 import {
   Container,
   Row,
@@ -8,23 +10,29 @@ import {
   FloatingLabel,
   Button,
 } from 'react-bootstrap';
-
 import { useTranslation } from 'react-i18next';
 
 import signUpPic from '../assets/signUpPic.jpg';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
+  const inputRef = useRef();
 
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-      confirmPassword: '',
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [inputRef]);
+
+  const signUpSchema = yup.object().shape({
+    username: yup.string()
+      .min(3, t('SignUpPage.form.validation.usernameSize'))
+      .max(20, t('SignUpPage.form.validation.usernameSize'))
+      .required(t('SignUpPage.form.validation.required')),
+    password: yup.string()
+      .min(6, t('SignUpPage.form.validation.passwordSize'))
+      .required(t('SignUpPage.form.validation.required')),
+    confirmPassword: yup.string()
+      .equals([yup.ref('password')], t('SignUpPage.form.validation.passwordsShouldBeEqual'))
+      .required(t('SignUpPage.form.validation.required')),
   });
 
   return (
@@ -40,82 +48,108 @@ const SignUpPage = () => {
                   alt={t('SignUpPage.logo')}
                 />
               </div>
-              <Form className="w-50">
-                <h1 className="text-center mb-4">{t('SignUpPage.title')}</h1>
-                <FloatingLabel
-                  controlId="username"
-                  label="Имя пользователя"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    autoComplete="username"
-                    placeholder="От 3 до 20 символов"
-                    required
-                    value={formik.username}
-                    onChange={formik.handleChange}
-                  />
-                  <Form.Control.Feedback
-                    placement="right"
-                    type="invalid"
-                    tooltip
-                  >
-                    Обязательное поле
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="password"
-                  label="Пароль"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    name="username"
-                    autoComplete="new-password"
-                    placeholder="Не менее 6 символов"
-                    required
-                    value={formik.password}
-                    onChange={formik.handleChange}
-                  />
-                  <Form.Control.Feedback
-                    placement="right"
-                    type="invalid"
-                    tooltip
-                  >
-                    Обязательное поле
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="confirmPassword"
-                  label="Подтвердите пароль"
-                  className="mb-4"
-                >
-                  <Form.Control
-                    type="password"
-                    name="confirmPassword"
-                    autoComplete="new-password"
-                    placeholder="Пароли должны совпадать"
-                    required
-                    value={formik.confirmPassword}
-                    onChange={formik.handleChange}
-                  />
-                  <Form.Control.Feedback
-                    placement="right"
-                    type="invalid"
-                    tooltip
-                  >
-                    Пароли должны совпадать
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <Button
-                  type="submit"
-                  variant="outline-primary"
-                  className="w-100"
-                >
-                  Зарегистрироваться
-                </Button>
-              </Form>
+              <Formik
+                initialValues={{
+                  username: '',
+                  password: '',
+                  confirmPassword: '',
+                }}
+                validationSchema={signUpSchema}
+                onSubmit={(values) => console.log(values)}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                }) => (
+                  <Form className="w-50" onSubmit={handleSubmit}>
+                    <h1 className="text-center mb-4">{t('SignUpPage.title')}</h1>
+                    <FloatingLabel
+                      controlId="username"
+                      label={t('SignUpPage.form.username')}
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        type="text"
+                        name="username"
+                        autoComplete="username"
+                        placeholder={t('SignUpPage.form.username')}
+                        value={values.username}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.username && !!errors.username}
+                        required
+                        ref={inputRef}
+                      />
+                      <Form.Control.Feedback
+                        placement="right"
+                        type="invalid"
+                        tooltip
+                      >
+                        {touched.username && errors.username}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <FloatingLabel
+                      controlId="password"
+                      label={t('SignUpPage.form.password')}
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        autoComplete="new-password"
+                        placeholder={t('SignUpPage.form.password')}
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.password && !!errors.password}
+                        required
+                      />
+                      <Form.Control.Feedback
+                        placement="right"
+                        type="invalid"
+                        tooltip
+                      >
+                        {touched.password && errors.password}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <FloatingLabel
+                      controlId="confirmPassword"
+                      label={t('SignUpPage.form.confirmPassword')}
+                      className="mb-4"
+                    >
+                      <Form.Control
+                        type="password"
+                        name="confirmPassword"
+                        autoComplete="new-password"
+                        placeholder={t('SignUpPage.form.confirmPassword')}
+                        value={values.confirmPassword}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.confirmPassword && !!errors.confirmPassword}
+                        required
+                      />
+                      <Form.Control.Feedback
+                        placement="right"
+                        type="invalid"
+                        tooltip
+                      >
+                        {touched.confirmPassword && errors.confirmPassword}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <Button
+                      type="submit"
+                      variant="outline-primary"
+                      className="w-100"
+                    >
+                      {t('SignUpPage.form.submitBtn')}
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
             </Card.Body>
           </Card>
         </Col>
