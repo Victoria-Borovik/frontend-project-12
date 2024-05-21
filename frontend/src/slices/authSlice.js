@@ -14,6 +14,8 @@ const authSlice = createSlice({
     login: (state, { payload }) => {
       window.localStorage.setItem('user', JSON.stringify(payload));
       state.isAuth = true;
+      state.username = payload.username;
+      state.token = payload.token;
     },
     logout: (state) => {
       window.localStorage.removeItem('user');
