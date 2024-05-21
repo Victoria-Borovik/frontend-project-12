@@ -71,7 +71,7 @@ const SignUpPage = () => {
                     })
                     .catch((error) => {
                       if (error.response && error.response.status === 409) {
-                        setErrors({ username: t('SignUpPage.validation.notUniqueLogin') });
+                        setErrors({ username: t('SignUpPage.form.validation.notUniqueLogin') });
                         inputRef.current.focus();
                         return;
                       }
