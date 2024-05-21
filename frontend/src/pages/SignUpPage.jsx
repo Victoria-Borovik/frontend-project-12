@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useEffect, useRef } from 'react';
@@ -11,11 +12,18 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
+import routes from '../routes.js';
+import { login } from '../slices/authSlice.js';
 import signUpPic from '../assets/signUpPic.jpg';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRef = useRef();
 
   useEffect(() => {
@@ -31,7 +39,7 @@ const SignUpPage = () => {
       .min(6, t('SignUpPage.form.validation.passwordSize'))
       .required(t('SignUpPage.form.validation.required')),
     confirmPassword: yup.string()
-      .equals([yup.ref('password')], t('SignUpPage.form.validation.passwordsShouldBeEqual'))
+      .equals([yup.ref('password')], t('SignUpPage.form.validation.notEqualPassword'))
       .required(t('SignUpPage.form.validation.required')),
   });
 
@@ -55,7 +63,22 @@ const SignUpPage = () => {
                   confirmPassword: '',
                 }}
                 validationSchema={signUpSchema}
-                onSubmit={(values) => console.log(values)}
+                onSubmit={(values, { setErrors }) => {
+                  axios.post(routes.signupPath, values)
+                    .then((response) => {
+                      dispatch(login(response.data));
+                      navigate(routes.chat);
+                    })
+                    .catch((error) => {
+                      if (error.response && error.response.status === 409) {
+                        setErrors({ username: t('SignUpPage.validation.notUniqueLogin') });
+                        inputRef.current.focus();
+                        return;
+                      }
+                      console.error(error);
+                      toast.error(t('toast.networkError'));
+                    });
+                }}
               >
                 {({
                   values,
