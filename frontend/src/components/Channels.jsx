@@ -9,6 +9,7 @@ import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useProfanityFilter } from '../context/ProfanityContext.jsx';
 import {
   getCurrentChannel,
   setCurrentChannel,
@@ -20,6 +21,7 @@ import {
 const ChannelsList = ({ channels, channelId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filter = useProfanityFilter();
 
   const getBtnClass = (id) => cn(
     'w-100 rounded-0 text-start text-truncate btn',
@@ -49,7 +51,7 @@ const ChannelsList = ({ channels, channelId }) => {
                   onClick={() => dispatch(setCurrentChannel({ id, name }))}
                 >
                   <span className="me-1">#</span>
-                  {name}
+                  {filter.clean(name)}
                 </button>
                 <Dropdown.Toggle
                   split
@@ -92,7 +94,7 @@ const ChannelsList = ({ channels, channelId }) => {
               }}
             >
               <span className="me-1">#</span>
-              {name}
+              {filter.clean(name)}
             </button>
           </Nav.Item>
         );

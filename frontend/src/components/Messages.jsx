@@ -10,11 +10,13 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { useProfanityFilter } from '../context/ProfanityContext.jsx';
 import { useAddMessageMutation } from '../slices/messagesApi.js';
 import { getUsername } from '../slices/authSlice.js';
 import { getCurrentChannel } from '../slices/uiSlice.js';
 
 const Message = ({ body, username }) => {
+  const filter = useProfanityFilter();
   const messageRef = useRef();
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const Message = ({ body, username }) => {
     <div className="text-break mb-2" ref={messageRef}>
       <b>{username}</b>
       <span>: </span>
-      <span>{body}</span>
+      <span>{filter.clean(body)}</span>
     </div>
   );
 };
@@ -93,11 +95,12 @@ const MessagesForm = ({ username, channelId }) => {
 
 const MessagesHeader = ({ header, messagesCount }) => {
   const { t } = useTranslation();
+  const filter = useProfanityFilter();
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
       <p className="m-0">
         <b># </b>
-        <b>{header}</b>
+        <b>{filter.clean(header)}</b>
       </p>
       <span className="text-muted">
         {t('Messages.messagesCounter.count', { count: messagesCount })}
