@@ -6,7 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { getChangingChannelId, closeModal } from '../../slices/uiSlice.js';
+import {
+  getCurrentChannel,
+  getChangingChannelId,
+  setCurrentChannel,
+  closeModal,
+} from '../../slices/uiSlice.js';
 import { useEditChannelMutation } from '../../slices/channelsApi.js';
 
 const Rename = ({ channels }) => {
@@ -14,6 +19,7 @@ const Rename = ({ channels }) => {
   const dispatch = useDispatch();
   const changingChannelId = useSelector((state) => getChangingChannelId(state));
   const changingChannel = channels.find(({ id }) => id === changingChannelId);
+  const currentChannel = useSelector((state) => getCurrentChannel(state));
   const [editChannel] = useEditChannelMutation();
 
   const handleClose = () => {
@@ -50,6 +56,10 @@ const Rename = ({ channels }) => {
             handleClose();
             editChannel({ id: changingChannelId, ...values })
               .then(() => {
+                if (currentChannel.id === changingChannelId) {
+                  console.log(values);
+                  dispatch(setCurrentChannel({ id: changingChannelId, ...values }));
+                }
                 toast.success(t('toast.renameChannel'));
               })
               .catch((error) => {
