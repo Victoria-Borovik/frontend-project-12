@@ -78,7 +78,7 @@ export default {
       networkError: 'Ошибка соединения',
       loadingError: 'Ошибка загрузки данных',
       addChannel: 'Канал создан',
-      removeChannel: 'Канал удален',
+      removeChannel: 'Канал удалён',
       renameChannel: 'Канал переименован',
     },
   },
