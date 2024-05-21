@@ -57,7 +57,6 @@ const Rename = ({ channels }) => {
             editChannel({ id: changingChannelId, ...values })
               .then(() => {
                 if (currentChannel.id === changingChannelId) {
-                  console.log(values);
                   dispatch(setCurrentChannel({ id: changingChannelId, ...values }));
                 }
                 toast.success(t('toast.renameChannel'));
