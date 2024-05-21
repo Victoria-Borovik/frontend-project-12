@@ -2,9 +2,40 @@ export default {
   translation: {
     Layout: {
       title: 'Hexlet Chat',
+      btn: 'Выйти',
+    },
+    Spinner: {
+      title: 'Загрузка сообщение',
     },
     Channels: {
       title: 'Каналы',
+      toggleTitle: 'Управление каналом',
+      removeDropdown: 'Удалить',
+      renameDropdown: 'Переименовать',
+    },
+    Messages: {
+      sendBtn: 'Отправить',
+      inputLabel: 'Новое сообщение',
+      messagesCounter: {
+        count_one: '{{count}} сообщение',
+        count_few: '{{count}} сообщения',
+        count_many: '{{count}} сообщений',
+      },
+    },
+    Modals: {
+      add: 'Добавить канал',
+      remove: 'Удалить канал',
+      removeMessage: 'Уверены?',
+      rename: 'Переименовать канал',
+      sendBtn: 'Отправить',
+      cancelBtn: 'Отменить',
+      removeBtn: 'Удалить',
+      label: 'Имя канала',
+      validation: {
+        channelSize: 'От 3 до 20 символов',
+        required: 'Обязательное поле',
+        unique: 'Должно быть уникальным',
+      },
     },
     SignUpPage: {
       title: 'Регистрация',
@@ -18,7 +49,8 @@ export default {
           required: 'Обязательное поле',
           usernameSize: 'От 3 до 20 символов',
           passwordSize: 'Не менее 6 символов',
-          passwordsShouldBeEqual: 'Пароли должны совпадать',
+          notEqualPassword: 'Пароли должны совпадать',
+          notUniqueLogin: 'Такой пользователь уже существует',
         },
       },
     },
@@ -41,6 +73,13 @@ export default {
       logo: 'Страница не найдена',
       message: 'Но вы можете перейти',
       link: 'на главную страницу',
+    },
+    toast: {
+      networkError: 'Ошибка соединения',
+      loadingError: 'Ошибка загрузки данных',
+      addChannel: 'Канал создан',
+      removeChannel: 'Канал удален',
+      renameChannel: 'Канал переименован',
     },
   },
 };

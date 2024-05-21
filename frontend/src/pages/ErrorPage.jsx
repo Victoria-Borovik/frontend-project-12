@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+
 import errorPic from '../assets/errorPic.svg';
 
 const ErrorPage = () => {

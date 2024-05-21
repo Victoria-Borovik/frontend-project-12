@@ -4,6 +4,9 @@ import 'bootstrap/dist/js/bootstrap.js';
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
+import { ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import filter from 'leo-profanity';
 
 import resources from './locales/index.js';
 import App from './components/App.jsx';
@@ -22,10 +25,25 @@ const init = async () => {
       },
     });
 
+  filter.add(filter.getDictionary('ru'));
+
   return (
     <I18nextProvider i18n={i18nextInstance}>
       <Provider store={store}>
         <App />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Slide}
+        />
       </Provider>
     </I18nextProvider>
   );

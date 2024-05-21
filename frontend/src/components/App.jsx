@@ -20,7 +20,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path={routes.chat} element={<Layout />}>
-          <Route index element={isAuth ? <ChatPage /> : <SignUpPage />} />
+          <Route index element={isAuth ? <ChatPage /> : <LogInPage />} />
           <Route path={routes.signup} element={<SignUpPage />} />
           <Route path={routes.login} element={<LogInPage />} />
           <Route path={routes.error} element={<ErrorPage />} />
