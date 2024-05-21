@@ -14,9 +14,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../slices/authSlice.js';
+import { toast } from 'react-toastify';
 
 import routes from '../routes.js';
+import { login } from '../slices/authSlice.js';
 import logInPic from '../assets/logInPic.jpg';
 
 const LogInPage = () => {
@@ -43,8 +44,13 @@ const LogInPage = () => {
           navigate(routes.chat);
         })
         .catch((error) => {
-          setIsAuthFailed(true);
-          console.log(error);
+          if (error.response && error.response.status === 401) {
+            setIsAuthFailed(true);
+            inputRef.current.focus();
+            return;
+          }
+          console.error(error);
+          toast.error(t('toast.networkError'));
         });
     },
   });
