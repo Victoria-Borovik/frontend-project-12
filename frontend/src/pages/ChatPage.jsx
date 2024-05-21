@@ -38,16 +38,16 @@ const ChatPage = () => {
     refetch: refetchMessages,
   } = useGetMessagesQuery();
 
-  const handleEditChannels = () => {
-    refetchChannels();
-    refetchMessages();
-  };
-
-  const handleEditMessages = () => {
-    refetchMessages();
-  };
-
   useEffect(() => {
+    const handleEditChannels = () => {
+      refetchChannels();
+      refetchMessages();
+    };
+
+    const handleEditMessages = () => {
+      refetchMessages();
+    };
+
     socket.on('newChannel', handleEditChannels);
     socket.on('renameChannel', handleEditChannels);
     socket.on('removeChannel', handleEditChannels);
@@ -59,7 +59,7 @@ const ChatPage = () => {
       socket.off('removeChannel', handleEditChannels);
       socket.off('newMessage', handleEditMessages);
     };
-  }, []);
+  }, [socket, refetchChannels, refetchMessages]);
 
   if (channelError || messageError) {
     console.log(channelError && messageError);
