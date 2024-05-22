@@ -5,8 +5,8 @@
 
 
 # Chat
--	instant messaging service. 
-It allows users to create channels and exchange messages withing the channels.
+instant messaging service.
+It allows users to create channels and exchange messages within the channels.
 
 [Click to see how it works](https://chat-app-07ev.onrender.com)
 
@@ -15,22 +15,23 @@ It allows users to create channels and exchange messages withing the channels.
 git clone git@github.com:Victoria-Borovik/frontend-project-12.git
 cd frontend-project-12
 make install
-```
-Open in development mode to run a localhost server with live reloading:
-```
-make develop
-```
-Open in production mode to minify bundles and improve load time:
-```
-make build
+make start
 ```
 
 ### Usage
-Add your RSS feed in the input field. You could add as many feeds as you want.
-<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-11/assets/103994412/653b98bc-aa7f-4b7b-a35d-ca4eb57f03bd">
+Sign up
+<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/bcc19ff5-2988-4bc3-b93c-bcd5871d4ada">
 
-A message informs you if something is wrong.
-<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-11/assets/103994412/f3b35541-3cb0-404d-9bf9-a7d372b0414c">
+Login
+<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/a873c3c9-57c4-43d7-80e4-c5700897fb35">
 
-New posts will be shown down below. Feeds update automatically.
-<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-11/assets/103994412/a550a3e7-5457-4c71-a1cd-dea165087b02">
+Create channel
+<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/66834182-6638-4a29-8d31-7160cdd4b527">
+
+Update channel
+<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/978bb58c-a1dd-4b51-be9b-386020b6f3bc">
+
+Write message
+<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/a3b2ec66-c752-41cf-8cd0-3aba6f23f1eb">
+
+
