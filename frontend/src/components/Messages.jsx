@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 
 import {
@@ -48,47 +48,41 @@ const MessagesForm = ({ username, channelId }) => {
     inputRef.current.focus();
   }, [inputRef, isLoading]);
 
+  const formik = useFormik({
+    initialValues: { body: '' },
+    onSubmit: (values, { resetForm }) => {
+      addMessage({ ...values, channelId, username });
+      resetForm();
+    },
+  });
+
   return (
     <div className="mt-auto px-5 py-3">
-      <Formik
-        initialValues={{ body: '' }}
-        onSubmit={(values, { resetForm }) => {
-          addMessage({ ...values, channelId, username });
-          resetForm();
-        }}
+      <Form
+        novalidate
+        className="py-1 border rounded-2"
+        onSubmit={formik.handleSubmit}
       >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <Form
-            novalidate
-            className="py-1 border rounded-2"
-            onSubmit={handleSubmit}
+        <InputGroup className="has-validation">
+          <Form.Control
+            name="body"
+            placeholder="Введите сообщение..."
+            aria-label={t('Messages.inputLabel')}
+            className="border-0 p-0 ps-2 form-control"
+            value={formik.values.body}
+            onChange={formik.handleChange}
+            ref={inputRef}
+          />
+          <button
+            type="submit"
+            className="btn btn-group-vertical"
+            disabled={isLoading || !formik.values.body.trim().length}
           >
-            <InputGroup className="has-validation">
-              <Form.Control
-                name="body"
-                placeholder="Введите сообщение..."
-                aria-label={t('Messages.inputLabel')}
-                className="border-0 p-0 ps-2 form-control"
-                value={values.body}
-                onChange={handleChange}
-                ref={inputRef}
-              />
-              <button
-                type="submit"
-                className="btn btn-group-vertical"
-                disabled={isLoading || !values.body.trim().length}
-              >
-                <ArrowRightSquare width={20} height={20} />
-                <span className="visually-hidden">{t('Messages.sendBtn')}</span>
-              </button>
-            </InputGroup>
-          </Form>
-        )}
-      </Formik>
+            <ArrowRightSquare width={20} height={20} />
+            <span className="visually-hidden">{t('Messages.sendBtn')}</span>
+          </button>
+        </InputGroup>
+      </Form>
     </div>
   );
 };

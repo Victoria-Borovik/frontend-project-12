@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
+import { useState, useEffect, useRef } from 'react';
 import {
   Container,
   Row,
@@ -10,7 +11,6 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -88,7 +88,7 @@ const LogInPage = () => {
                     isInvalid={isAuthFailed}
                     ref={inputRef}
                     onChange={formik.handleChange}
-                    value={formik.username}
+                    value={formik.values.username}
                   />
                 </FloatingLabel>
                 <FloatingLabel
@@ -104,7 +104,7 @@ const LogInPage = () => {
                     placeholder={t('LogInPage.form.password')}
                     isInvalid={isAuthFailed}
                     onChange={formik.handleChange}
-                    value={formik.password}
+                    value={formik.values.password}
                   />
                   <Form.Control.Feedback tooltip type="invalid">
                     {t('LogInPage.form.invalid')}

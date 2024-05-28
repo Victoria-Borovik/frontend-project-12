@@ -77,6 +77,7 @@ export default {
     toast: {
       networkError: 'Ошибка соединения',
       loadingError: 'Ошибка загрузки данных',
+      userError: 'Устаревший пользователь',
       addChannel: 'Канал создан',
       removeChannel: 'Канал удалён',
       renameChannel: 'Канал переименован',

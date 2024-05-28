@@ -67,7 +67,7 @@ const ChatPage = () => {
   if (channelError || messageError) {
     if (channelError.status === 401 || messageError.status === 401) {
       dispatch(logout());
-      toast.error(t('toast.loadingError'));
+      toast.error(t('toast.userError'));
     } else {
       toast.error(t('toast.networkError'));
     }
