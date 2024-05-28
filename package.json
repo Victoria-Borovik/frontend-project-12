@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Victoria-Borovik/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Victoria-Borovik/frontend-project-12/actions)",
+  "description": "Chat App for exchanging messages within channels",
   "main": "index.js",
   "type": "module",
   "scripts": {
