@@ -1,8 +1,10 @@
+const apiPath = '/api/v1';
+
 export default {
-  loginPath: '/api/v1/login',
-  signupPath: '/api/v1/signup',
-  channelsPath: '/api/v1/channels',
-  messagesPath: '/api/v1/messages',
+  loginPath: `${apiPath}/login`,
+  signupPath: `${apiPath}/signup`,
+  channelsPath: `${apiPath}/channels`,
+  messagesPath: `${apiPath}/messages`,
   login: 'login',
   error: 'error',
   notDefined: '*',
