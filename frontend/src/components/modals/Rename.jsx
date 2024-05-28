@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import {
-  getCurrentChannel,
+  getActiveChannelId,
   getChangingChannelId,
-  setCurrentChannel,
+  setActiveChannelId,
   closeModal,
 } from '../../slices/uiSlice.js';
 import { useEditChannelMutation } from '../../slices/channelsApi.js';
@@ -19,7 +19,7 @@ const Rename = ({ channels }) => {
   const dispatch = useDispatch();
   const changingChannelId = useSelector((state) => getChangingChannelId(state));
   const changingChannel = channels.find(({ id }) => id === changingChannelId);
-  const currentChannel = useSelector((state) => getCurrentChannel(state));
+  const activeChannelId = useSelector((state) => getActiveChannelId(state));
   const [editChannel] = useEditChannelMutation();
 
   const inputRef = useRef();
@@ -45,11 +45,11 @@ const Rename = ({ channels }) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      handleClose();
+      dispatch(closeModal());
       editChannel({ id: changingChannelId, ...values })
         .then(() => {
-          if (currentChannel.id === changingChannelId) {
-            dispatch(setCurrentChannel({ id: changingChannelId, ...values }));
+          if (activeChannelId === changingChannelId) {
+            dispatch(setActiveChannelId(changingChannelId));
           }
           toast.success(t('toast.renameChannel'));
         })

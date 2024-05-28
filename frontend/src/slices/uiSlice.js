@@ -1,22 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
+const defaultChannelId = '1';
+
 const uiSlice = createSlice({
   name: 'ui',
   initialState: {
-    currentChannel: { id: '1', name: 'general' },
-    modal: null,
+    activeChannelId: defaultChannelId,
     changingChannelId: null,
+    modal: null,
   },
   reducers: {
-    setCurrentChannel: (state, { payload = { id: '1', name: 'general' } }) => {
-      state.currentChannel = payload;
+    setActiveChannelId: (state, { payload }) => {
+      state.activeChannelId = payload;
     },
-    setChangingChannel: (state, { payload }) => {
+    setChangingChannelId: (state, { payload }) => {
       state.changingChannelId = payload;
     },
     setUiToDefault: (state) => {
-      state.currentChannel = { id: '1', name: 'general' };
+      state.activeChannelId = defaultChannelId;
       state.modal = null;
       state.changingChannelId = null;
     },
@@ -38,8 +40,8 @@ const uiSlice = createSlice({
 });
 
 export const {
-  setCurrentChannel,
-  setChangingChannel,
+  setActiveChannelId,
+  setChangingChannelId,
   setUiToDefault,
   openAddModal,
   openRemoveModal,
@@ -47,8 +49,8 @@ export const {
   closeModal,
 } = uiSlice.actions;
 
-export const getCurrentChannel = (state) => state.ui.currentChannel;
-export const getModalType = (state) => state.ui.modal;
+export const getActiveChannelId = (state) => state.ui.activeChannelId;
 export const getChangingChannelId = (state) => state.ui.changingChannelId;
+export const getModalType = (state) => state.ui.modal;
 
 export default uiSlice.reducer;

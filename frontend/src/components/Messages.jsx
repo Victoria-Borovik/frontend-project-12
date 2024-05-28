@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { useProfanityFilter } from '../context/ProfanityContext.jsx';
 import { useAddMessageMutation } from '../slices/messagesApi.js';
 import { getUsername } from '../slices/authSlice.js';
-import { getCurrentChannel } from '../slices/uiSlice.js';
+import { getActiveChannelId } from '../slices/uiSlice.js';
 
 const Message = ({ body, username }) => {
   const filter = useProfanityFilter();
@@ -103,17 +103,18 @@ const MessagesHeader = ({ header, messagesCount }) => {
   );
 };
 
-const Messages = ({ messages }) => {
+const Messages = ({ messages, channels }) => {
   const username = useSelector((state) => getUsername(state));
-  const currentChannel = useSelector((state) => getCurrentChannel(state));
-  const currentMessages = messages.filter(({ channelId }) => channelId === currentChannel.id);
+  const activeChannelId = useSelector((state) => getActiveChannelId(state));
+  const activeChannel = channels.find(({ id }) => id === activeChannelId);
+  const activeChannelMessages = messages.filter(({ channelId }) => channelId === activeChannelId);
 
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
-        <MessagesHeader header={currentChannel.name} messagesCount={currentMessages.length} />
-        <MessagesBox messages={currentMessages} />
-        <MessagesForm username={username} channelId={currentChannel.id} />
+        <MessagesHeader header={activeChannel?.name} messagesCount={activeChannelMessages.length} />
+        <MessagesBox messages={activeChannelMessages} />
+        <MessagesForm username={username} channelId={activeChannelId} />
       </div>
     </Col>
   );

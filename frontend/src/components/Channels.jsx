@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useProfanityFilter } from '../context/ProfanityContext.jsx';
 import {
-  getCurrentChannel,
-  setCurrentChannel,
+  getActiveChannelId,
+  setActiveChannelId,
   openAddModal,
   openRenameModal,
   openRemoveModal,
@@ -48,7 +48,7 @@ const ChannelsList = ({ channels, channelId }) => {
                 <button
                   type="button"
                   className={getBtnClass(id)}
-                  onClick={() => dispatch(setCurrentChannel({ id, name }))}
+                  onClick={() => dispatch(setActiveChannelId(id))}
                 >
                   <span className="me-1">#</span>
                   {filter.clean(name)}
@@ -90,7 +90,7 @@ const ChannelsList = ({ channels, channelId }) => {
               type="button"
               className={getBtnClass(id)}
               onClick={() => {
-                dispatch(setCurrentChannel({ id, name }));
+                dispatch(setActiveChannelId(id));
               }}
             >
               <span className="me-1">#</span>
@@ -122,11 +122,11 @@ const ChannelsHeader = () => {
 };
 
 const Channels = ({ channels }) => {
-  const currentChannel = useSelector((state) => getCurrentChannel(state));
+  const activeChannelId = useSelector((state) => getActiveChannelId(state));
   return (
     <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <ChannelsHeader />
-      <ChannelsList channels={channels} channelId={currentChannel.id} />
+      <ChannelsList channels={channels} channelId={activeChannelId} />
     </Col>
   );
 };

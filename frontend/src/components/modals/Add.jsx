@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import { setCurrentChannel, closeModal } from '../../slices/uiSlice.js';
+import { setActiveChannelId, closeModal } from '../../slices/uiSlice.js';
 import { useAddChannelMutation } from '../../slices/channelsApi.js';
 
 const Add = ({ channels }) => {
@@ -40,7 +40,7 @@ const Add = ({ channels }) => {
       handleClose();
       addChannel(values)
         .then(({ data }) => {
-          dispatch(setCurrentChannel(data));
+          dispatch(setActiveChannelId(data.id));
           toast.success(t('toast.addChannel'));
         })
         .catch((error) => {

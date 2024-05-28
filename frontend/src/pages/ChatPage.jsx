@@ -88,7 +88,7 @@ const ChatPage = () => {
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">
           <Channels channels={channels} />
-          <Messages messages={messages} />
+          <Messages channels={channels} messages={messages} />
         </Row>
       </Container>
       {renderModal({ modal, channels, messages })}
