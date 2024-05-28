@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Channels from '../components/Channels.jsx';
 import Messages from '../components/Messages.jsx';
 import CustomSpinner from '../components/Spinner.jsx';
+import { logout } from '../slices/authSlice.js';
 import { getModalType } from '../slices/uiSlice.js';
 import { useGetChannelsQuery } from '../slices/channelsApi.js';
 import { useGetMessagesQuery } from '../slices/messagesApi.js';
@@ -24,7 +25,9 @@ const renderModal = ({ modal, channels, messages }) => {
 const ChatPage = () => {
   const socket = io();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const modal = useSelector((state) => getModalType(state));
+
   const {
     data: channels,
     error: channelError,
@@ -62,8 +65,12 @@ const ChatPage = () => {
   }, [socket, refetchChannels, refetchMessages]);
 
   if (channelError || messageError) {
-    console.log(channelError && messageError);
-    toast.error(t('toast.loadingError'));
+    if (channelError.status === 401 || messageError.status === 401) {
+      dispatch(logout());
+      toast.error(t('toast.loadingError'));
+    } else {
+      toast.error(t('toast.networkError'));
+    }
   }
 
   if (isChannelsLoading || isMessagesLoading) {
