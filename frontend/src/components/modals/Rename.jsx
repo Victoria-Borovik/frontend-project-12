@@ -32,7 +32,7 @@ const Rename = ({ channels }) => {
   }, []);
 
   const validationSchema = yup.object().shape({
-    name: yup.string()
+    name: yup.string().trim()
       .min(3, t('Modals.validation.channelSize'))
       .max(20, t('Modals.validation.channelSize'))
       .required(t('Modals.validation.required'))

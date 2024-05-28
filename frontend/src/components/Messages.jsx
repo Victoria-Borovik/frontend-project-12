@@ -80,7 +80,7 @@ const MessagesForm = ({ username, channelId }) => {
               <button
                 type="submit"
                 className="btn btn-group-vertical"
-                disabled={isLoading || !values.body.length}
+                disabled={isLoading || !values.body.trim().length}
               >
                 <ArrowRightSquare width={20} height={20} />
                 <span className="visually-hidden">{t('Messages.sendBtn')}</span>
