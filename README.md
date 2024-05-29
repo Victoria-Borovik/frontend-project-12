@@ -7,7 +7,7 @@ Instant messaging service.
 Allows users to create channels and exchange messages within the channels.
 
 [Click to see how it works](https://chat-app-07ev.onrender.com)
-
+___
 ### Install
 ```
 git clone git@github.com:Victoria-Borovik/frontend-project-12.git
@@ -15,7 +15,7 @@ cd frontend-project-12
 make install
 make start
 ```
-
+___
 ### Usage
 - *Sign up* in Chat using unique username and password.
 <img width="600" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/bcc19ff5-2988-4bc3-b93c-bcd5871d4ada">
