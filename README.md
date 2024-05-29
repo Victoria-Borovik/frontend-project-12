@@ -18,7 +18,7 @@ make start
 
 ### Usage
 - *Sign up* in Chat using unique username and password.
-<img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/bcc19ff5-2988-4bc3-b93c-bcd5871d4ada">
+<img width="600" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/bcc19ff5-2988-4bc3-b93c-bcd5871d4ada">
 
 - *Enter* your username and password in order to log into the account.
 <img width="721" alt="image" src="https://github.com/Victoria-Borovik/frontend-project-12/assets/103994412/a873c3c9-57c4-43d7-80e4-c5700897fb35">
