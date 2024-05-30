@@ -1,5 +1,3 @@
-import { io } from 'socket.io-client';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +21,6 @@ const renderModal = ({ modal, channels, messages }) => {
 };
 
 const ChatPage = () => {
-  const socket = io();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const modal = useSelector((state) => getModalType(state));
@@ -32,37 +29,12 @@ const ChatPage = () => {
     data: channels,
     error: channelError,
     isLoading: isChannelsLoading,
-    refetch: refetchChannels,
   } = useGetChannelsQuery();
   const {
     data: messages,
     error: messageError,
     isLoading: isMessagesLoading,
-    refetch: refetchMessages,
   } = useGetMessagesQuery();
-
-  useEffect(() => {
-    const handleEditChannels = () => {
-      refetchChannels();
-      refetchMessages();
-    };
-
-    const handleEditMessages = () => {
-      refetchMessages();
-    };
-
-    socket.on('newChannel', handleEditChannels);
-    socket.on('renameChannel', handleEditChannels);
-    socket.on('removeChannel', handleEditChannels);
-    socket.on('newMessage', handleEditMessages);
-
-    return () => {
-      socket.off('newChannel', handleEditChannels);
-      socket.off('renameChannel', handleEditChannels);
-      socket.off('removeChannel', handleEditChannels);
-      socket.off('newMessage', handleEditMessages);
-    };
-  }, [socket, refetchChannels, refetchMessages]);
 
   if (channelError || messageError) {
     if (channelError.status === 401 || messageError.status === 401) {

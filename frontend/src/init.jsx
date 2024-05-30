@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
-import { Provider } from 'react-redux';
+import { io } from 'socket.io-client';
 import i18next from 'i18next';
+import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,6 +12,8 @@ import { ProfanityProvider } from './context/ProfanityContext.jsx';
 import resources from './locales/index.js';
 import App from './components/App.jsx';
 import store from './slices/index.js';
+import { channelsApi } from './slices/channelsApi.js';
+import { messagesApi } from './slices/messagesApi.js';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
@@ -18,6 +21,34 @@ const rollbarConfig = {
 };
 
 const init = async () => {
+  const socket = io();
+  const { isAuth } = store.getState().auth;
+  console.log(isAuth);
+
+  if (isAuth) {
+    const channelsApiPromise = store.dispatch(channelsApi.endpoints.getChannels.initiate());
+    const messagesApiPromise = store.dispatch(messagesApi.endpoints.getMessages.initiate());
+    const { refetch: refetchChannels } = channelsApiPromise;
+    const { refetch: refetchMessages } = messagesApiPromise;
+
+    console.log(channelsApiPromise);
+    console.log(messagesApiPromise);
+
+    const handleEditChannels = () => {
+      refetchChannels();
+      refetchMessages();
+    };
+
+    const handleEditMessages = () => {
+      refetchMessages();
+    };
+
+    socket.on('newChannel', handleEditChannels);
+    socket.on('renameChannel', handleEditChannels);
+    socket.on('removeChannel', handleEditChannels);
+    socket.on('newMessage', handleEditMessages);
+  }
+
   const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
