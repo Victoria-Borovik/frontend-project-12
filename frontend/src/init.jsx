@@ -22,33 +22,33 @@ const rollbarConfig = {
 
 const init = async () => {
   const socket = io();
-  const { isAuth } = store.getState().auth;
-  console.log(isAuth);
+  store.subscribe(() => {
+    const { isAuth } = store.getState().auth;
 
-  if (isAuth) {
-    const channelsApiPromise = store.dispatch(channelsApi.endpoints.getChannels.initiate());
-    const messagesApiPromise = store.dispatch(messagesApi.endpoints.getMessages.initiate());
-    const { refetch: refetchChannels } = channelsApiPromise;
-    const { refetch: refetchMessages } = messagesApiPromise;
+    if (isAuth) {
+      const channelsApiPromise = store.dispatch(channelsApi.endpoints.getChannels.initiate());
+      const messagesApiPromise = store.dispatch(messagesApi.endpoints.getMessages.initiate());
+      const { refetch: refetchChannels } = channelsApiPromise;
+      const { refetch: refetchMessages } = messagesApiPromise;
 
-    console.log(channelsApiPromise);
-    console.log(messagesApiPromise);
+      const handleEditChannels = () => {
+        refetchChannels();
+        refetchMessages();
+      };
 
-    const handleEditChannels = () => {
-      refetchChannels();
-      refetchMessages();
-    };
+      const handleEditMessages = () => {
+        refetchMessages();
+      };
 
-    const handleEditMessages = () => {
-      refetchMessages();
-    };
+      socket.on('newChannel', handleEditChannels);
+      socket.on('renameChannel', handleEditChannels);
+      socket.on('removeChannel', handleEditChannels);
+      socket.on('newMessage', handleEditMessages);
 
-    socket.on('newChannel', handleEditChannels);
-    socket.on('renameChannel', handleEditChannels);
-    socket.on('removeChannel', handleEditChannels);
-    socket.on('newMessage', handleEditMessages);
-  }
-
+      channelsApiPromise.unsubscribe();
+      messagesApiPromise.unsubscribe();
+    }
+  });
   const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
