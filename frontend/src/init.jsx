@@ -22,33 +22,38 @@ const rollbarConfig = {
 
 const init = async () => {
   const socket = io();
-  store.subscribe(() => {
-    const { isAuth } = store.getState().auth;
 
-    if (isAuth) {
-      const channelsApiPromise = store.dispatch(channelsApi.endpoints.getChannels.initiate());
-      const messagesApiPromise = store.dispatch(messagesApi.endpoints.getMessages.initiate());
-      const { refetch: refetchChannels } = channelsApiPromise;
-      const { refetch: refetchMessages } = messagesApiPromise;
+  const handleNewChannel = (channel) => {
+    store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (channelsDraft) => {
+      channelsDraft.push(channel);
+    }));
+  };
 
-      const handleEditChannels = () => {
-        refetchChannels();
-        refetchMessages();
-      };
+  const handleRenameChannel = (channel) => {
+    store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (channelsDraft) => {
+      const channelIndex = channelsDraft.findIndex(({ id }) => id === channel.id);
+      channelsDraft[channelIndex] = channel;
+    }));
+  };
 
-      const handleEditMessages = () => {
-        refetchMessages();
-      };
+  const handleRemoveChannel = (channel) => {
+    store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (channelsDraft) => {
+      const channelIndex = channelsDraft.findIndex(({ id }) => id === channel.id);
+      channelsDraft.splice(channelIndex, 1);
+    }));
+  };
 
-      socket.on('newChannel', handleEditChannels);
-      socket.on('renameChannel', handleEditChannels);
-      socket.on('removeChannel', handleEditChannels);
-      socket.on('newMessage', handleEditMessages);
+  const handleNewMessages = (message) => {
+    store.dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (messagesDraft) => {
+      messagesDraft.push(message);
+    }));
+  };
 
-      channelsApiPromise.unsubscribe();
-      messagesApiPromise.unsubscribe();
-    }
-  });
+  socket.on('newChannel', handleNewChannel);
+  socket.on('renameChannel', handleRenameChannel);
+  socket.on('removeChannel', handleRemoveChannel);
+  socket.on('newMessage', handleNewMessages);
+
   const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
