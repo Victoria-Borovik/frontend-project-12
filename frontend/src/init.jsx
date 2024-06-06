@@ -32,7 +32,7 @@ const init = async () => {
   const handleRenameChannel = (channel) => {
     store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (channelsDraft) => {
       const channelIndex = channelsDraft.findIndex(({ id }) => id === channel.id);
-      channelsDraft[channelIndex] = channel;
+      channelsDraft[channelIndex].name = channel.name;
     }));
   };
 
