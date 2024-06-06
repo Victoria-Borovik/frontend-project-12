@@ -1,5 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Victoria-Borovik/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Victoria-Borovik/frontend-project-12/actions)
+[![chat-check](https://github.com/Victoria-Borovik/frontend-project-12/actions/workflows/chat-check.yml/badge.svg)](https://github.com/Victoria-Borovik/frontend-project-12/actions/workflows/chat-check.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/020d8c092cda3c6441db/maintainability)](https://codeclimate.com/github/Victoria-Borovik/frontend-project-12/maintainability)
 
 # Chat
