@@ -7,7 +7,6 @@ export default {
   messagesPath: `${apiPath}/messages`,
   login: 'login',
   error: 'error',
-  notDefined: '*',
   chat: '/',
   signup: 'signup',
 };

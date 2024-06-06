@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import routes from '../routes.js';
 import errorPic from '../assets/errorPic.svg';
 
 const ErrorPage = () => {
@@ -15,7 +16,7 @@ const ErrorPage = () => {
       <p className="text-muted">
         {t('ErrorPage.message')}
         {' '}
-        <a href="/">{t('ErrorPage.link')}</a>
+        <a href={routes.chat}>{t('ErrorPage.link')}</a>
       </p>
     </div>
   );

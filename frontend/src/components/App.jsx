@@ -24,7 +24,7 @@ const App = () => {
           <Route path={routes.signup} element={<SignUpPage />} />
           <Route path={routes.login} element={<LogInPage />} />
           <Route path={routes.error} element={<ErrorPage />} />
-          <Route path={routes.notDefined} element={<Navigate to={routes.error} />} />
+          <Route path="*" element={<Navigate to={routes.error} />} />
         </Route>
       </Routes>
     </BrowserRouter>
