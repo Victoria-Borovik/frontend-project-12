@@ -30,9 +30,10 @@ const init = async () => {
   };
 
   const handleRenameChannel = (channel) => {
+    console.log(channel);
     store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (channelsDraft) => {
       const channelIndex = channelsDraft.findIndex(({ id }) => id === channel.id);
-      channelsDraft[channelIndex].name = channel.name;
+      channelsDraft.splice(channelIndex, 1, channel);
     }));
   };
 
