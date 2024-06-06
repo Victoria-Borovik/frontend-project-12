@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import cn from 'classnames';
 import {
   Col,
@@ -18,90 +19,97 @@ import {
   openRemoveModal,
 } from '../slices/uiSlice.js';
 
-const ChannelsList = ({ channels, channelId }) => {
+const Channel = ({ channel, activeChannelId }) => {
+  const { id, name, removable } = channel;
+  const isActiveChannel = id === activeChannelId;
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const filter = useProfanityFilter();
 
-  const getBtnClass = (id) => cn(
+  const ref = useRef(null);
+  const activeChannelRef = isActiveChannel ? ref : null;
+
+  useEffect(() => {
+    if (activeChannelRef) {
+      activeChannelRef.current.scrollIntoView();
+    }
+  }, [activeChannelRef]);
+
+  const getBtnClass = () => cn(
     'w-100 rounded-0 text-start text-truncate btn',
-    { 'btn-secondary': channelId === id },
+    { 'btn-secondary': isActiveChannel },
   );
 
   return (
-    <Nav
-      as="ul"
-      className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+    <Nav.Item
+      as="li"
+      className="w-100"
+      ref={activeChannelRef}
     >
-      {channels && channels.map(({ id, name, removable }) => {
-        if (removable) {
-          return (
-            <Nav.Item
-              as="li"
-              className="w-100"
-              key={id}
-            >
-              <Dropdown
-                as={ButtonGroup}
-                className="d-flex"
-              >
-                <button
-                  type="button"
-                  className={getBtnClass(id)}
-                  onClick={() => dispatch(setActiveChannelId(id))}
-                >
-                  <span className="me-1">#</span>
-                  {filter.clean(name)}
-                </button>
-                <Dropdown.Toggle
-                  split
-                  variant={cn({ secondary: channelId === id })}
-                  className="flex-grow-0"
-                >
-                  <span className="visually-hidden">
-                    {t('Channels.toggleTitle')}
-                  </span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    href="#"
-                    onClick={() => dispatch(openRemoveModal(id))}
-                  >
-                    {t('Channels.removeDropdown')}
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    href="#"
-                    onClick={() => dispatch(openRenameModal(id))}
-                  >
-                    {t('Channels.renameDropdown')}
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Nav.Item>
-          );
-        }
-        return (
-          <Nav.Item
-            as="li"
-            className="w-100"
-            key={id}
+      {removable ? (
+        <Dropdown
+          as={ButtonGroup}
+          className="d-flex"
+        >
+          <button
+            type="button"
+            className={getBtnClass()}
+            onClick={() => dispatch(setActiveChannelId(id))}
           >
-            <button
-              type="button"
-              className={getBtnClass(id)}
-              onClick={() => {
-                dispatch(setActiveChannelId(id));
-              }}
+            <span className="me-1">#</span>
+            {filter.clean(name)}
+          </button>
+          <Dropdown.Toggle
+            split
+            variant={cn({ secondary: activeChannelId === id })}
+            className="flex-grow-0"
+          >
+            <span className="visually-hidden">
+              {t('Channels.toggleTitle')}
+            </span>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              href="#"
+              onClick={() => dispatch(openRemoveModal(id))}
             >
-              <span className="me-1">#</span>
-              {filter.clean(name)}
-            </button>
-          </Nav.Item>
-        );
-      })}
-    </Nav>
+              {t('Channels.removeDropdown')}
+            </Dropdown.Item>
+            <Dropdown.Item
+              href="#"
+              onClick={() => dispatch(openRenameModal(id))}
+            >
+              {t('Channels.renameDropdown')}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
+        <button
+          type="button"
+          className={getBtnClass(id)}
+          onClick={() => {
+            dispatch(setActiveChannelId(id));
+          }}
+        >
+          <span className="me-1">#</span>
+          {filter.clean(name)}
+        </button>
+      )}
+    </Nav.Item>
   );
 };
+
+const ChannelsList = ({ channels, activeChannelId }) => (
+  <Nav
+    as="ul"
+    className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+  >
+    {channels && channels.map((channel) => (
+      <Channel key={channel.id} channel={channel} activeChannelId={activeChannelId} />
+    ))}
+  </Nav>
+);
 
 const ChannelsHeader = () => {
   const dispatch = useDispatch();
@@ -126,7 +134,7 @@ const Channels = ({ channels }) => {
   return (
     <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <ChannelsHeader />
-      <ChannelsList channels={channels} channelId={activeChannelId} />
+      <ChannelsList channels={channels} activeChannelId={activeChannelId} />
     </Col>
   );
 };
