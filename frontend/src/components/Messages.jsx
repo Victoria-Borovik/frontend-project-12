@@ -66,7 +66,7 @@ const MessagesForm = ({ username, channelId }) => {
         <InputGroup className="has-validation">
           <Form.Control
             name="body"
-            placeholder="Введите сообщение..."
+            placeholder={t('Messages.enterMessage')}
             aria-label={t('Messages.inputLabel')}
             className="border-0 p-0 ps-2 form-control"
             value={formik.values.body}
@@ -93,7 +93,9 @@ const MessagesHeader = ({ header, messagesCount }) => {
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
       <p className="m-0">
-        <b># </b>
+        <b>
+          {t('Messages.channelMarker')}
+        </b>
         <b>{filter.clean(header)}</b>
       </p>
       <span className="text-muted">

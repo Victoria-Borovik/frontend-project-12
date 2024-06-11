@@ -9,13 +9,16 @@ export default {
     },
     Channels: {
       title: 'Каналы',
+      marker: '#',
       toggleTitle: 'Управление каналом',
       removeDropdown: 'Удалить',
       renameDropdown: 'Переименовать',
     },
     Messages: {
       sendBtn: 'Отправить',
+      channelMarker: '# ',
       inputLabel: 'Новое сообщение',
+      enterMessage: 'Введите сообщение...',
       messagesCounter: {
         count_one: '{{count}} сообщение',
         count_few: '{{count}} сообщения',

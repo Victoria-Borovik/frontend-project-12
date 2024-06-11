@@ -57,7 +57,7 @@ const Channel = ({ channel, activeChannelId }) => {
             className={getBtnClass()}
             onClick={() => dispatch(setActiveChannelId(id))}
           >
-            <span className="me-1">#</span>
+            <span className="me-1">{t('Channels.marker')}</span>
             {filter.clean(name)}
           </button>
           <Dropdown.Toggle
@@ -92,7 +92,7 @@ const Channel = ({ channel, activeChannelId }) => {
             dispatch(setActiveChannelId(id));
           }}
         >
-          <span className="me-1">#</span>
+          <span className="me-1">{t('Channels.marker')}</span>
           {filter.clean(name)}
         </button>
       )}
