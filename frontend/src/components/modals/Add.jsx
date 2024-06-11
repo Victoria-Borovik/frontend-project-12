@@ -6,12 +6,15 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+import { useProfanityFilter } from '../../context/ProfanityContext.jsx';
 import { setActiveChannelId, closeModal } from '../../slices/uiSlice.js';
 import { useAddChannelMutation } from '../../slices/channelsApi.js';
 
 const Add = ({ channels }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filter = useProfanityFilter();
+
   const [addChannel] = useAddChannelMutation();
 
   const inputRef = useRef();
@@ -38,7 +41,7 @@ const Add = ({ channels }) => {
     validateOnBlur: false,
     onSubmit: (values) => {
       handleClose();
-      addChannel(values)
+      addChannel({ ...values, name: filter.clean(values.name) })
         .then(({ data }) => {
           dispatch(setActiveChannelId(data.id));
           toast.success(t('toast.addChannel'));

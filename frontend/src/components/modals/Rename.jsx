@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { useProfanityFilter } from '../../context/ProfanityContext.jsx';
 import {
   getActiveChannelId,
   getChangingChannelId,
@@ -17,6 +18,8 @@ import { useEditChannelMutation } from '../../slices/channelsApi.js';
 const Rename = ({ channels }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filter = useProfanityFilter();
+
   const changingChannelId = useSelector((state) => getChangingChannelId(state));
   const changingChannel = channels.find(({ id }) => id === changingChannelId);
   const activeChannelId = useSelector((state) => getActiveChannelId(state));
@@ -46,7 +49,7 @@ const Rename = ({ channels }) => {
     validateOnBlur: false,
     onSubmit: (values) => {
       dispatch(closeModal());
-      editChannel({ id: changingChannelId, ...values })
+      editChannel({ id: changingChannelId, name: filter.clean(values.name) })
         .then(() => {
           if (activeChannelId === changingChannelId) {
             dispatch(setActiveChannelId(changingChannelId));
