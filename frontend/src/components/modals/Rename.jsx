@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { useProfanityFilter } from '../../context/ProfanityContext.jsx';
 import {
   getActiveChannelId,
   getChangingChannelId,
@@ -17,6 +18,7 @@ import { useEditChannelMutation } from '../../slices/channelsApi.js';
 const Rename = ({ channels }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filter = useProfanityFilter();
   const changingChannelId = useSelector((state) => getChangingChannelId(state));
   const changingChannel = channels.find(({ id }) => id === changingChannelId);
   const activeChannelId = useSelector((state) => getActiveChannelId(state));
@@ -75,7 +77,7 @@ const Rename = ({ channels }) => {
               name="name"
               id="name"
               isInvalid={!!formik.errors.name}
-              value={formik.values.name}
+              value={filter.clean(formik.values.name)}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               ref={inputRef}

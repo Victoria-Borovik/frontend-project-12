@@ -6,12 +6,14 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+import { useProfanityFilter } from '../../context/ProfanityContext.jsx';
 import { setActiveChannelId, closeModal } from '../../slices/uiSlice.js';
 import { useAddChannelMutation } from '../../slices/channelsApi.js';
 
 const Add = ({ channels }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filter = useProfanityFilter();
   const [addChannel] = useAddChannelMutation();
 
   const inputRef = useRef();
@@ -65,7 +67,7 @@ const Add = ({ channels }) => {
               name="name"
               id="name"
               isInvalid={!!formik.errors.name}
-              value={formik.values.name}
+              value={filter.clean(formik.values.name)}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               ref={inputRef}
