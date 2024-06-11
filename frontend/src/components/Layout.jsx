@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
+import routes from '../routes.js';
 import { logout, getIsAuth } from '../slices/authSlice.js';
 import { setUiToDefault } from '../slices/uiSlice.js';
 
@@ -20,7 +21,7 @@ const AppHeader = () => {
     <div className="d-flex flex-column h-100">
       <Navbar expand="lg" className="shadow-sm bg-white">
         <Container>
-          <Navbar.Brand href="/">{t('Layout.title')}</Navbar.Brand>
+          <Navbar.Brand href={routes.chat}>{t('Layout.title')}</Navbar.Brand>
           {isAuth
             && <Button variant="primary" onClick={handleClick}>{t('Layout.btn')}</Button>}
         </Container>
