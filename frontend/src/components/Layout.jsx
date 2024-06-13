@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import routes from '../routes.js';
 import { logout, getIsAuth } from '../slices/authSlice.js';
-import { setUiToDefault } from '../slices/uiSlice.js';
+import { setModalChannelId, setModal } from '../slices/uiSlice.js';
 
 const AppHeader = () => {
   const { t } = useTranslation();
@@ -14,7 +14,8 @@ const AppHeader = () => {
 
   const handleClick = () => {
     dispatch(logout());
-    dispatch(setUiToDefault());
+    dispatch(setModal(null));
+    dispatch(setModalChannelId(null));
   };
 
   return (

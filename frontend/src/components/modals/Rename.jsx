@@ -6,23 +6,22 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { useActiveChannelContext } from '../../context/ActiveChannelContext.jsx';
 import { useProfanityFilter } from '../../context/ProfanityContext.jsx';
-import {
-  getActiveChannelId,
-  getChangingChannelId,
-  setActiveChannelId,
-  closeModal,
-} from '../../slices/uiSlice.js';
+import { getModalChannelId, setModal } from '../../slices/uiSlice.js';
 import { useEditChannelMutation } from '../../slices/channelsApi.js';
 
 const Rename = ({ channels }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {
+    activeChannelId,
+    setActiveChannelId,
+  } = useActiveChannelContext();
   const filter = useProfanityFilter();
 
-  const changingChannelId = useSelector((state) => getChangingChannelId(state));
+  const changingChannelId = useSelector((state) => getModalChannelId(state));
   const changingChannel = channels.find(({ id }) => id === changingChannelId);
-  const activeChannelId = useSelector((state) => getActiveChannelId(state));
   const [editChannel] = useEditChannelMutation();
 
   const inputRef = useRef();
@@ -31,7 +30,7 @@ const Rename = ({ channels }) => {
   }, []);
 
   const handleClose = () => {
-    dispatch(closeModal());
+    dispatch(setModal(null));
   };
 
   const validationSchema = yup.object().shape({
@@ -48,11 +47,11 @@ const Rename = ({ channels }) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      dispatch(closeModal());
+      dispatch(setModal());
       editChannel({ id: changingChannelId, name: filter.clean(values.name) })
         .then(() => {
           if (activeChannelId === changingChannelId) {
-            dispatch(setActiveChannelId(changingChannelId));
+            setActiveChannelId(changingChannelId);
           }
           toast.success(t('toast.renameChannel'));
         })

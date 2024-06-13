@@ -8,24 +8,24 @@ import {
 } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+import { useActiveChannelContext } from '../context/ActiveChannelContext.jsx';
 import { useProfanityFilter } from '../context/ProfanityContext.jsx';
-import {
-  getActiveChannelId,
-  setActiveChannelId,
-  openAddModal,
-  openRenameModal,
-  openRemoveModal,
-} from '../slices/uiSlice.js';
+import { setModal, setModalChannelId } from '../slices/uiSlice.js';
 
-const Channel = ({ channel, activeChannelId }) => {
+const Channel = ({ channel }) => {
   const { id, name, removable } = channel;
-  const isActiveChannel = id === activeChannelId;
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const filter = useProfanityFilter();
+  const {
+    activeChannelId,
+    setActiveChannelId,
+  } = useActiveChannelContext();
+
+  const isActiveChannel = id === activeChannelId;
 
   const ref = useRef(null);
   const activeChannelRef = isActiveChannel ? ref : null;
@@ -55,7 +55,7 @@ const Channel = ({ channel, activeChannelId }) => {
           <button
             type="button"
             className={getBtnClass()}
-            onClick={() => dispatch(setActiveChannelId(id))}
+            onClick={() => setActiveChannelId(id)}
           >
             <span className="me-1">{t('Channels.marker')}</span>
             {filter.clean(name)}
@@ -72,13 +72,19 @@ const Channel = ({ channel, activeChannelId }) => {
           <Dropdown.Menu>
             <Dropdown.Item
               href="#"
-              onClick={() => dispatch(openRemoveModal(id))}
+              onClick={() => {
+                dispatch(setModal('removing'));
+                dispatch(setModalChannelId(id));
+              }}
             >
               {t('Channels.removeDropdown')}
             </Dropdown.Item>
             <Dropdown.Item
               href="#"
-              onClick={() => dispatch(openRenameModal(id))}
+              onClick={() => {
+                dispatch(setModal('renaming'));
+                dispatch(setModalChannelId(id));
+              }}
             >
               {t('Channels.renameDropdown')}
             </Dropdown.Item>
@@ -88,9 +94,7 @@ const Channel = ({ channel, activeChannelId }) => {
         <button
           type="button"
           className={getBtnClass(id)}
-          onClick={() => {
-            dispatch(setActiveChannelId(id));
-          }}
+          onClick={() => setActiveChannelId(id)}
         >
           <span className="me-1">{t('Channels.marker')}</span>
           {filter.clean(name)}
@@ -100,13 +104,13 @@ const Channel = ({ channel, activeChannelId }) => {
   );
 };
 
-const ChannelsList = ({ channels, activeChannelId }) => (
+const ChannelsList = ({ channels }) => (
   <Nav
     as="ul"
     className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
   >
     {channels && channels.map((channel) => (
-      <Channel key={channel.id} channel={channel} activeChannelId={activeChannelId} />
+      <Channel key={channel.id} channel={channel} />
     ))}
   </Nav>
 );
@@ -120,7 +124,7 @@ const ChannelsHeader = () => {
       <button
         type="button"
         className="p-0 text-primary btn btn-group-vertical"
-        onClick={() => dispatch(openAddModal())}
+        onClick={() => dispatch(setModal('adding'))}
       >
         <PlusSquare width="20" height="20" />
         <span className="visually-hidden">+</span>
@@ -129,14 +133,11 @@ const ChannelsHeader = () => {
   );
 };
 
-const Channels = ({ channels }) => {
-  const activeChannelId = useSelector((state) => getActiveChannelId(state));
-  return (
-    <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-      <ChannelsHeader />
-      <ChannelsList channels={channels} activeChannelId={activeChannelId} />
-    </Col>
-  );
-};
+const Channels = ({ channels }) => (
+  <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+    <ChannelsHeader />
+    <ChannelsList channels={channels} />
+  </Col>
+);
 
 export default Channels;

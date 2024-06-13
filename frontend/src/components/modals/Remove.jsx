@@ -3,38 +3,39 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { useActiveChannelContext } from '../../context/ActiveChannelContext.jsx';
 import { useRemoveChannelMutation } from '../../slices/channelsApi.js';
 import { useRemoveMessageMutation } from '../../slices/messagesApi.js';
 import {
-  getActiveChannelId,
-  getChangingChannelId,
-  setChangingChannelId,
-  setUiToDefault,
-  closeModal,
+  getModalChannelId,
+  setModalChannelId,
+  setModal,
 } from '../../slices/uiSlice.js';
 
 const Remove = ({ messages }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const activeChannelId = useSelector((state) => getActiveChannelId(state));
-  const changingChannelId = useSelector((state) => getChangingChannelId(state));
+  const {
+    activeChannelId,
+    setActiveChannelId,
+  } = useActiveChannelContext();
+  const changingChannelId = useSelector((state) => getModalChannelId(state));
   const changingChannelMessages = messages.map(({ channelId }) => channelId === changingChannelId);
   const [removeMessage] = useRemoveMessageMutation();
   const [removeChannel] = useRemoveChannelMutation();
 
   const handleClose = () => {
-    dispatch(closeModal());
+    dispatch(setModal(null));
   };
 
   const handleRemove = () => {
     removeChannel(changingChannelId)
       .then(() => {
         if (activeChannelId === changingChannelId) {
-          dispatch(setUiToDefault());
-        } else {
-          dispatch(setChangingChannelId(null));
-          dispatch(closeModal());
+          setActiveChannelId();
         }
+        dispatch(setModal(null));
+        dispatch(setModalChannelId(null));
         changingChannelMessages.map(({ id }) => removeMessage(id));
         toast.success(t('toast.removeChannel'));
       })

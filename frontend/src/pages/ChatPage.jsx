@@ -3,6 +3,7 @@ import { Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+import { ActiveChannelProvider } from '../context/ActiveChannelContext.jsx';
 import Channels from '../components/Channels.jsx';
 import Messages from '../components/Messages.jsx';
 import CustomSpinner from '../components/Spinner.jsx';
@@ -56,7 +57,7 @@ const ChatPage = () => {
   }
 
   return (
-    <>
+    <ActiveChannelProvider>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">
           <Channels channels={channels} />
@@ -64,7 +65,7 @@ const ChatPage = () => {
         </Row>
       </Container>
       {renderModal({ modal, channels, messages })}
-    </>
+    </ActiveChannelProvider>
   );
 };
 

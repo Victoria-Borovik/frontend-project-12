@@ -10,15 +10,15 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { useActiveChannelContext } from '../context/ActiveChannelContext.jsx';
 import { useProfanityFilter } from '../context/ProfanityContext.jsx';
 import { useAddMessageMutation } from '../slices/messagesApi.js';
 import { getUsername } from '../slices/authSlice.js';
-import { getActiveChannelId } from '../slices/uiSlice.js';
 
 const Message = ({ body, username }) => {
   const filter = useProfanityFilter();
-  const messageRef = useRef();
 
+  const messageRef = useRef();
   useEffect(() => {
     messageRef.current.scrollIntoView();
   }, [messageRef]);
@@ -106,10 +106,10 @@ const MessagesHeader = ({ header, messagesCount }) => {
 };
 
 const Messages = ({ messages, channels }) => {
-  const username = useSelector((state) => getUsername(state));
-  const activeChannelId = useSelector((state) => getActiveChannelId(state));
+  const { activeChannelId } = useActiveChannelContext();
   const activeChannel = channels.find(({ id }) => id === activeChannelId);
   const activeChannelMessages = messages.filter(({ channelId }) => channelId === activeChannelId);
+  const username = useSelector((state) => getUsername(state));
 
   return (
     <Col className="p-0 h-100">
